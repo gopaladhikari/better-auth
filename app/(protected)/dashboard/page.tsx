@@ -1,7 +1,7 @@
 export default function Page() {
   return (
     <main>
-      <h1>Hello world</h1>
+      <h1 className="text-3xl">Welcome to the dashboard</h1>
     </main>
   );
 }
