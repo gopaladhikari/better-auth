@@ -1,7 +1,9 @@
+import { User } from "./(authentication)/_components/user-info";
+
 export default function Page() {
   return (
     <main>
-      <h1>Hello world</h1>
+      <User />
     </main>
   );
 }

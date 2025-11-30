@@ -9,11 +9,14 @@ import { Form } from "@heroui/form";
 import { Divider } from "@heroui/divider";
 import { Icon } from "@iconify/react";
 import { authClient } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
 
 export function LoginForm() {
   const [isVisible, setIsVisible] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<Error | null>(null);
+
+  const router = useRouter();
 
   const toggleVisibility = () => setIsVisible(!isVisible);
 
@@ -28,11 +31,18 @@ export function LoginForm() {
 
     try {
       setLoading(true);
-      const { data, error } = await authClient.signIn.email({
-        email: formData.email as string,
-        password: formData.password as string,
-        rememberMe,
-      });
+      const { data, error } = await authClient.signIn.email(
+        {
+          email: formData.email as string,
+          password: formData.password as string,
+          rememberMe,
+        },
+        {
+          onSuccess() {
+            router.push("/");
+          },
+        }
+      );
 
       if (error) throw error;
 

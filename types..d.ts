@@ -4,9 +4,9 @@ declare global {
       MONGODB_URI: string;
       BETTER_AUTH_URL: string;
       BETTER_AUTH_SECRET: string;
-      NEXT_PUBLIC_BETTER_AUTH_URL: string;
       GOOGLE_CLIENT_ID: string;
       GOOGLE_CLIENT_SECRET: string;
+      ARCJET_KEY: string;
     }
   }
 

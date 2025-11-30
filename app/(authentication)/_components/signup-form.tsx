@@ -5,49 +5,38 @@ import { Button } from "@heroui/button";
 import { Input } from "@heroui/input";
 import { Checkbox } from "@heroui/checkbox";
 import { Link } from "@heroui/link";
-import { addToast } from "@heroui/toast";
 import { Icon } from "@iconify/react";
 import { authClient } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
+import { useForm } from "@/hooks/useForm";
 
 export function SignUpForm() {
+  const { error, isLoading, handleSubmit } = useForm();
+
   const [isVisible, setIsVisible] = React.useState(false);
   const [isConfirmVisible, setIsConfirmVisible] = React.useState(false);
 
-  const [isLoading, setIsLoading] = React.useState(false);
-  const [error, setError] = React.useState<Error | null>(null);
+  const router = useRouter();
 
   const toggleVisibility = () => setIsVisible(!isVisible);
   const toggleConfirmVisibility = () => setIsConfirmVisible(!isConfirmVisible);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setError(null);
-
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     const formData = Object.fromEntries(new FormData(e.currentTarget));
 
-    try {
-      const { data, error } = await authClient.signUp.email({
+    await authClient.signUp.email(
+      {
         email: formData.email as string,
         password: formData.password as string,
         name: formData.username as string,
         username: formData.username as string,
-        callbackURL: "/dashboard",
-      });
-
-      if (error) throw error;
-
-      console.log(data);
-    } catch (error) {
-      setError(error as Error);
-      addToast({
-        title: "Sign Up Failed",
-        description: (error as Error).message,
-        color: "danger",
-      });
-    } finally {
-      setIsLoading(false);
-    }
+      },
+      {
+        onSuccess() {
+          router.push("/");
+        },
+      }
+    );
   };
 
   return (
@@ -59,7 +48,7 @@ export function SignUpForm() {
             👋
           </span>
         </p>
-        <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+        <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
           <Input
             isRequired
             label="Username"
