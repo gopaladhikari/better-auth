@@ -9,9 +9,10 @@ import { Icon } from "@iconify/react";
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import { useForm } from "@/hooks/useForm";
+import { addToast } from "@heroui/toast";
 
 export function SignUpForm() {
-  const { error, isLoading, handleSubmit } = useForm();
+  const { error, setError, isLoading, handleSubmit } = useForm();
 
   const [isVisible, setIsVisible] = React.useState(false);
   const [isConfirmVisible, setIsConfirmVisible] = React.useState(false);
@@ -34,6 +35,14 @@ export function SignUpForm() {
       {
         onSuccess() {
           router.push("/");
+        },
+        onError(context) {
+          setError(new Error(context.error.message));
+          addToast({
+            title: context.error.message,
+            variant: "bordered",
+            color: "danger",
+          });
         },
       }
     );
@@ -129,14 +138,12 @@ export function SignUpForm() {
               Privacy Policy
             </Link>
           </Checkbox>
+
+          {error && <p className="text-small text-danger">{error.message}</p>}
+
           <Button color="primary" type="submit" isLoading={isLoading}>
             Sign Up
           </Button>
-          {error && (
-            <p className="text-small text-center text-danger">
-              {error.message}
-            </p>
-          )}
         </form>
         <p className="text-small text-center">
           <Link href="#" size="sm">

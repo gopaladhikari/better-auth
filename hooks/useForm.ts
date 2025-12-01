@@ -20,8 +20,8 @@ export const useForm = <T = unknown>() => {
 
         if (result) setData(result);
       } catch (err) {
-        setError(err as Error);
         console.error("Form Submission Error:", err);
+        setError(err as Error);
       } finally {
         setIsLoading(false);
       }
@@ -32,6 +32,8 @@ export const useForm = <T = unknown>() => {
     data,
     isLoading,
     error,
+    setError,
+    setData,
     handleSubmit,
   };
 };

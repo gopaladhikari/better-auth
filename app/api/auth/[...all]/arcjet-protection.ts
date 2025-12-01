@@ -9,13 +9,14 @@ import { findIp } from "@arcjet/ip";
 import { auth } from "@/lib/auth";
 
 const signUpProtection = arcjet({
-  key: process.env.ARCJET_KEY!,
+  key: process.env.ARCJET_KEY,
   rules: [
     protectSignup({
       email: {
         mode: "LIVE",
         block: ["DISPOSABLE", "INVALID", "NO_MX_RECORDS"],
       },
+
       bots: {
         mode: "LIVE",
         allow: [],
@@ -59,7 +60,7 @@ const protection = arcjet({
 });
 
 export async function arcjetProtection(req: Request) {
-  const body = await req.clone().json();
+  const body = await req.json();
 
   const session = await auth.api.getSession({
     headers: req.headers,
@@ -67,9 +68,11 @@ export async function arcjetProtection(req: Request) {
 
   const userIdOrIp = session?.user.id ?? (findIp(req) || "127.0.0.1");
 
-  if (req.url.endsWith("/signup")) {
+  // req.url = http://localhost:3000/api/auth/sign-up/email
+
+  if (req.url.endsWith("/auth/sign-up/email")) {
     if (body && typeof body === "object" && "email" in body) {
-      const decision = signUpProtection.protect(req, {
+      const decision = await signUpProtection.protect(req, {
         email: body.email,
       });
 
@@ -77,8 +80,10 @@ export async function arcjetProtection(req: Request) {
     }
   }
 
-  return protection.protect(req, {
+  const decision = await protection.protect(req, {
     requested: 5,
     userIdOrIp,
   });
+
+  return decision;
 }
