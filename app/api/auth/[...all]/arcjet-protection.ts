@@ -24,7 +24,7 @@ const signUpProtection = arcjet({
 
       rateLimit: {
         mode: "LIVE",
-        interval: "10m",
+        interval: "1m",
         max: 5,
       },
     }),
@@ -43,7 +43,7 @@ const protection = arcjet({
       mode: "LIVE",
       characteristics: ["userIdOrIp"],
       refillRate: 20,
-      interval: 10,
+      interval: 5,
       capacity: 20,
     }),
 

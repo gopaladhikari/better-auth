@@ -22,9 +22,11 @@ export function LoginForm() {
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     const formData = Object.fromEntries(new FormData(event.currentTarget));
 
+    const form = event.currentTarget;
+
     const rememberMe = typeof formData.remember === "string";
 
-    await authClient.signIn.email(
+    return await authClient.signIn.email(
       {
         email: formData.email as string,
         password: formData.password as string,
@@ -32,6 +34,7 @@ export function LoginForm() {
       },
       {
         onSuccess() {
+          form.reset();
           router.push("/");
         },
         onError(context) {
@@ -58,6 +61,7 @@ export function LoginForm() {
           className="flex flex-col gap-3"
           validationBehavior="native"
           onSubmit={handleSubmit(onSubmit)}
+          autoComplete="off"
         >
           <Input
             isRequired

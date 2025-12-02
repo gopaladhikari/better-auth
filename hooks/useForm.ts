@@ -13,12 +13,6 @@ type Action<T = unknown> =
   | { type: "CUSTOM"; payload: States }
   | { type: "RESET" };
 
-const initialState: States = {
-  data: null,
-  isLoading: false,
-  error: null,
-};
-
 function reducer(state: States, action: Action): States {
   switch (action.type) {
     case "PENDING":
@@ -53,11 +47,17 @@ function reducer(state: States, action: Action): States {
   }
 }
 
+const initialState: States = {
+  data: null,
+  isLoading: false,
+  error: null,
+};
+
 export const useForm = <T = unknown>() => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   function handleSubmit(
-    callback: (e: React.FormEvent<HTMLFormElement>) => Promise<T>
+    callback: (event: React.FormEvent<HTMLFormElement>) => Promise<T>
   ) {
     return async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
@@ -67,7 +67,34 @@ export const useForm = <T = unknown>() => {
       try {
         const result = await callback(e);
 
-        if (result) dispatch({ type: "RESOLVED", payload: result });
+        if (
+          result &&
+          typeof result === "object" &&
+          "error" in result &&
+          result.error
+        ) {
+          const errorObj =
+            result.error instanceof Error
+              ? result.error
+              : new Error(
+                  (result.error as Error)?.message || "An error occurred"
+                );
+
+          dispatch({
+            type: "REJECTED",
+            payload: errorObj,
+          });
+
+          return result;
+        }
+
+        if (result && typeof result === "object" && "data" in result) {
+          dispatch({ type: "RESOLVED", payload: result.data });
+          return result;
+        }
+
+        dispatch({ type: "RESOLVED", payload: result });
+        return result;
       } catch (err) {
         dispatch({
           type: "REJECTED",

@@ -42,7 +42,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json(
       {
-        message: decision.reason.type?.[0] || "Something went wrong",
+        message: decision.reason || "Something went wrong",
       },
       {
         status: 400,

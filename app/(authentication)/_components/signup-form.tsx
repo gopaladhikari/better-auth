@@ -41,7 +41,9 @@ export function SignUpForm() {
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     const formData = Object.fromEntries(new FormData(e.currentTarget));
 
-    await authClient.signUp.email(
+    const form = e.currentTarget;
+
+    return await authClient.signUp.email(
       {
         email: formData.email as string,
         password: formData.password as string,
@@ -50,6 +52,7 @@ export function SignUpForm() {
       },
       {
         onSuccess() {
+          form.reset();
           router.push("/");
         },
         onError(context) {
@@ -82,6 +85,7 @@ export function SignUpForm() {
           className="flex flex-col gap-3"
           validationBehavior="native"
           onSubmit={handleSubmit(onSubmit)}
+          autoComplete="off"
         >
           <Input
             isRequired
@@ -123,9 +127,11 @@ export function SignUpForm() {
             name="password"
             placeholder="Enter your password"
             type={isVisible ? "text" : "password"}
+            onPaste={(e) => e.preventDefault()}
             variant="bordered"
             value={password}
             onValueChange={setPassword}
+            onCopy={(e) => e.preventDefault()}
             errorMessage={() => (
               <ul>
                 {errors?.map((error, i) => (
@@ -157,6 +163,8 @@ export function SignUpForm() {
             placeholder="Confirm your password"
             type={isConfirmVisible ? "text" : "password"}
             variant="bordered"
+            onPaste={(e) => e.preventDefault()}
+            onCopy={(e) => e.preventDefault()}
             value={confirmPassword}
             onValueChange={setConfirmPassword}
             validate={(value) => {
