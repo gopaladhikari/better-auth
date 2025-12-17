@@ -41,7 +41,9 @@ export function SignUpForm() {
   };
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    const formData = Object.fromEntries(new FormData(e.currentTarget));
+    const formData = Object.fromEntries(
+      new FormData(e.currentTarget)
+    );
 
     const form = e.currentTarget;
 
@@ -75,9 +77,11 @@ export function SignUpForm() {
     <div className="flex h-full w-full items-center justify-center my-12">
       <div className="rounded-large bg-content1 shadow-small flex w-full max-w-sm flex-col gap-4 px-8 pt-6 pb-10">
         <div className="flex flex-col gap-1">
-          <h1 className="text-large font-medium">Sign up to your account</h1>
+          <h1 className="text-large font-medium">
+            Sign up to your account
+          </h1>
           <p className="text-small text-default-500">
-            to continue to better-auth
+            to create a new account with better-auth.
           </p>
         </div>
 
@@ -181,12 +185,18 @@ export function SignUpForm() {
               Terms
             </Link>
             &nbsp; and&nbsp;
-            <Link className="relative z-1" href="/privacy-policy" size="sm">
+            <Link
+              className="relative z-1"
+              href="/privacy-policy"
+              size="sm"
+            >
               Privacy Policy
             </Link>
           </Checkbox>
 
-          {error && <p className="text-small text-danger">{error.message}</p>}
+          {error && (
+            <p className="text-small text-danger">{error.message}</p>
+          )}
           {data && typeof data === "object" && "user" in data ? (
             <p className="text-sm text-success">
               Verfication email has been sent to your email{" "}
@@ -210,7 +220,9 @@ export function SignUpForm() {
         </div>
         <div className="flex flex-col gap-2">
           <Button
-            startContent={<Icon icon="flat-color-icons:google" width={24} />}
+            startContent={
+              <Icon icon="flat-color-icons:google" width={24} />
+            }
             variant="bordered"
             onPress={googleSignUp}
           >

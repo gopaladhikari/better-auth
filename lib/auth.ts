@@ -29,6 +29,7 @@ export const auth = betterAuth({
     enabled: true,
     requireEmailVerification: true,
 
+    // Forgot password and reset password
     async sendResetPassword({ url, user }) {
       void resend.emails.send({
         from: "Acme <onboarding@resend.dev>",
@@ -38,7 +39,7 @@ export const auth = betterAuth({
       });
     },
   },
-
+  // Verifying the email after signup
   emailVerification: {
     autoSignInAfterVerification: true,
     sendOnSignUp: true,
