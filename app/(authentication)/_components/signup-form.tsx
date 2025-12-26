@@ -34,8 +34,8 @@ export function SignUpForm() {
 
   const [isConfirmVisible, setIsConfirmVisible] = useToggle();
 
-  const googleSignUp = () => {
-    authClient.signIn.social({
+  const googleSignUp = async () => {
+    await authClient.signIn.social({
       provider: "google",
     });
   };
@@ -45,21 +45,12 @@ export function SignUpForm() {
       new FormData(e.currentTarget)
     );
 
-    const form = e.currentTarget;
-
-    const { data, error } = await authClient.signUp.email(
-      {
-        email: formData.email as string,
-        password: formData.password as string,
-        name: formData.username as string,
-        username: formData.username as string,
-      },
-      {
-        onSuccess() {
-          form.reset();
-        },
-      }
-    );
+    const { data, error } = await authClient.signUp.email({
+      email: formData.email as string,
+      password: formData.password as string,
+      name: formData.username as string,
+      username: formData.username as string,
+    });
 
     if (error) throw error;
 

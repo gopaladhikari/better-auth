@@ -1,11 +1,12 @@
 import { betterAuth } from "better-auth";
 import { MongoClient } from "mongodb";
 import { mongodbAdapter } from "better-auth/adapters/mongodb";
-import { username } from "better-auth/plugins";
+import { createAuthMiddleware, username } from "better-auth/plugins";
 import { nextCookies } from "better-auth/next-js";
 import { Resend } from "resend";
 import { SignupEmailVerification } from "@/emails/signup-email-verfication";
 import { ResetPasswordEmail } from "@/emails/reset-password-email";
+import { WelcomeEmail } from "@/emails/welcome-email";
 
 const mongodbUri = process.env.MONGODB_URI;
 
@@ -57,8 +58,8 @@ export const auth = betterAuth({
   socialProviders: {
     google: {
       prompt: "select_account",
-      clientId: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOLE_CLIENT_SECRET,
+      clientId: process.env.GOOGLE_CLIENT_ID as string,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
     },
   },
 
@@ -67,6 +68,26 @@ export const auth = betterAuth({
       enabled: true,
       maxAge: 60 * 10, // 10 minutes
     },
+  },
+
+  hooks: {
+    after: createAuthMiddleware(async (ctx) => {
+      console.log("paths", ctx.path);
+      if (ctx.path.startsWith("/verify-email")) {
+        const session = ctx.context.newSession?.user;
+
+        if (session) {
+          void resend.emails.send({
+            from: "Acme <onboarding@resend.dev>",
+            to: [session.email],
+            subject: "Welcome to Better auth",
+            react: WelcomeEmail({
+              name: session.name,
+            }),
+          });
+        }
+      }
+    }),
   },
 });
 

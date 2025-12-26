@@ -20,7 +20,10 @@ export function User() {
         <h1>Hello {data.user.name}</h1>
         <p>Your email is {data.user.email}</p>
 
-        <Button color="danger" onPress={async () => await authClient.signOut()}>
+        <Button
+          color="danger"
+          onPress={async () => await authClient.signOut()}
+        >
           Sign out
         </Button>
       </div>

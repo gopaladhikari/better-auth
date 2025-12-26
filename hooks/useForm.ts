@@ -19,10 +19,20 @@ function reducer<T>(state: States<T>, action: Action<T>): States<T> {
       return { ...state, data: null, isLoading: true, error: null };
 
     case "REJECTED":
-      return { ...state, data: null, isLoading: false, error: action.payload };
+      return {
+        ...state,
+        data: null,
+        isLoading: false,
+        error: action.payload,
+      };
 
     case "RESOLVED":
-      return { ...state, data: action.payload, isLoading: false, error: null };
+      return {
+        ...state,
+        data: action.payload,
+        isLoading: false,
+        error: null,
+      };
 
     case "RESET":
       return initialState as States<T>;
@@ -39,7 +49,10 @@ const initialState: States<unknown> = {
 };
 
 export const useForm = <T>() => {
-  const [state, dispatch] = useReducer(reducer<T>, initialState as States<T>);
+  const [state, dispatch] = useReducer(
+    reducer<T>,
+    initialState as States<T>
+  );
 
   function handleSubmit<R extends T>(
     callback: (event: React.FormEvent<HTMLFormElement>) => Promise<R>
@@ -62,7 +75,9 @@ export const useForm = <T>() => {
         const error =
           err instanceof Error
             ? err
-            : new Error((err as Error)?.message || "Something went wrong");
+            : new Error(
+                (err as Error)?.message || "Something went wrong"
+              );
 
         dispatch({
           type: "REJECTED",

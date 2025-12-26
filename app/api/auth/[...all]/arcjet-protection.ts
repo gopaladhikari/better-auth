@@ -70,6 +70,8 @@ export async function arcjetProtection(req: Request) {
 
   // req.url = /api/auth/sign-up/email
 
+  console.log(req.url);
+
   if (
     req.url.endsWith("/auth/sign-up/email") &&
     body &&
