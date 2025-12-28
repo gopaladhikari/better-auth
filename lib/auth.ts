@@ -26,6 +26,13 @@ export const auth = betterAuth({
   }),
 
   plugins: [username(), nextCookies()],
+  user: {
+    additionalFields: {
+      address: {
+        type: "string",
+      },
+    },
+  },
   emailAndPassword: {
     enabled: true,
     requireEmailVerification: true,
@@ -60,6 +67,12 @@ export const auth = betterAuth({
       prompt: "select_account",
       clientId: process.env.GOOGLE_CLIENT_ID as string,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+
+      mapProfileToUser() {
+        return {
+          address: "Google Earth",
+        };
+      },
     },
   },
 

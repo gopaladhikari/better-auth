@@ -49,6 +49,7 @@ export function SignUpForm() {
       email: formData.email as string,
       password: formData.password as string,
       name: formData.username as string,
+      address: "earth",
       username: formData.username as string,
     });
 
