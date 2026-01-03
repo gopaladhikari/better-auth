@@ -3,9 +3,23 @@
 import { authClient } from "@/lib/auth-client";
 import { Button } from "@heroui/button";
 import { Spinner } from "@heroui/spinner";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export function User() {
   const { data, isPending } = authClient.useSession();
+
+  const router = useRouter();
+
+  const handleSignOut = async () => {
+    await authClient.signOut({
+      fetchOptions: {
+        onSuccess() {
+          router.refresh();
+        },
+      },
+    });
+  };
 
   if (isPending)
     return (
@@ -20,10 +34,11 @@ export function User() {
         <h1>Hello {data.user.name}</h1>
         <p>Your email is {data.user.email}</p>
 
-        <Button
-          color="danger"
-          onPress={async () => await authClient.signOut()}
-        >
+        <Button as={Link} href="/dashboard">
+          Dashboard
+        </Button>
+
+        <Button color="danger" onPress={handleSignOut}>
           Sign out
         </Button>
       </div>

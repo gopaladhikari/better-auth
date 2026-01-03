@@ -39,8 +39,6 @@ export function ForgotPasswordForm() {
 
     if (error) throw error;
 
-    console.log(data);
-
     return data;
   };
 

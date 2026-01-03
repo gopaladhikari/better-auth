@@ -1,5 +1,3 @@
-// Create welcome email
-
 import {
   Body,
   Container,

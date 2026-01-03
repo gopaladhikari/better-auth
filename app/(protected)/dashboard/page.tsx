@@ -1,7 +1,15 @@
-export default function Page() {
+import { Suspense } from "react";
+import { DahboardTabs } from "../_components/dahboard-tabs";
+import { UserInfo } from "../_components/user-info";
+
+export default async function Page() {
   return (
-    <main>
-      <h1 className="text-3xl">Welcome to the dashboard</h1>
+    <main className="max-w-6xl mx-auto space-y-6">
+      <Suspense fallback={<div>Loading...</div>}>
+        <UserInfo />
+      </Suspense>
+
+      <DahboardTabs />
     </main>
   );
 }

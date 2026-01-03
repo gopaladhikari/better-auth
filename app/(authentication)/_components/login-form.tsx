@@ -20,11 +20,9 @@ export function LoginForm() {
   const router = useRouter();
 
   const googleSignIn = async () => {
-    const res = await authClient.signIn.social({
+    await authClient.signIn.social({
       provider: "google",
     });
-
-    console.log(res);
   };
 
   const onSubmit = async (

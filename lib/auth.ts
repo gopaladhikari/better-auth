@@ -27,12 +27,28 @@ export const auth = betterAuth({
 
   plugins: [username(), nextCookies()],
   user: {
+    changeEmail: {
+      enabled: true,
+      async sendChangeEmailConfirmation({ url, user, newEmail }) {
+        void resend.emails.send({
+          from: "Auth Lift <contact@gopal-adhikari.com.np>",
+          to: [newEmail],
+          subject: "Confirm your new email address",
+          react: SignupEmailVerification({
+            name: user.name,
+            url,
+          }),
+        });
+      },
+    },
+
     additionalFields: {
       address: {
         type: "string",
       },
     },
   },
+
   emailAndPassword: {
     enabled: true,
     requireEmailVerification: true,
@@ -40,7 +56,7 @@ export const auth = betterAuth({
     // Forgot password and reset password
     async sendResetPassword({ url, user }) {
       void resend.emails.send({
-        from: "Acme <onboarding@resend.dev>",
+        from: "Auth Lift <contact@gopal-adhikari.com.np>",
         to: [user.email],
         subject: "Reset your password",
         react: ResetPasswordEmail({ name: user.name, url }),
@@ -54,7 +70,7 @@ export const auth = betterAuth({
 
     async sendVerificationEmail({ url, user }) {
       void resend.emails.send({
-        from: "Acme <onboarding@resend.dev>",
+        from: "Acme <contact@gopal-adhikari.com.np>",
         to: [user.email],
         subject: "Verify your email address",
         react: SignupEmailVerification({ name: user.name, url }),
@@ -85,13 +101,12 @@ export const auth = betterAuth({
 
   hooks: {
     after: createAuthMiddleware(async (ctx) => {
-      console.log("paths", ctx.path);
       if (ctx.path.startsWith("/verify-email")) {
         const session = ctx.context.newSession?.user;
 
         if (session) {
           void resend.emails.send({
-            from: "Acme <onboarding@resend.dev>",
+            from: "Acme <contact@gopal-adhikari.com.np>",
             to: [session.email],
             subject: "Welcome to Better auth",
             react: WelcomeEmail({

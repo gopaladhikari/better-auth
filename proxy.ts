@@ -6,9 +6,9 @@ import {
 import { headers } from "next/headers";
 import { auth } from "@/lib/auth";
 
-const protectedRoutes = ["/dashboard"];
+export const protectedRoutes = ["/dashboard"];
 
-const authRoutes = [
+export const authRoutes = [
   "/login",
   "/sign-in",
   "/sign-up",
@@ -21,8 +21,6 @@ export async function proxy(request: NextRequest) {
   });
 
   const url = request.nextUrl.pathname;
-
-  console.log("nextUrl", request.nextUrl);
 
   if (session && authRoutes.includes(url))
     return NextResponse.redirect(new URL("/dashboard", request.url));

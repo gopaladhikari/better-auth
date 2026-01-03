@@ -68,10 +68,6 @@ export async function arcjetProtection(req: Request) {
 
   const userIdOrIp = session?.user.id ?? (findIp(req) || "127.0.0.1");
 
-  // req.url = /api/auth/sign-up/email
-
-  console.log(req.url);
-
   if (
     req.url.endsWith("/auth/sign-up/email") &&
     body &&

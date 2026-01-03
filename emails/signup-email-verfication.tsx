@@ -5,7 +5,6 @@ import {
   Head,
   Heading,
   Html,
-  Img,
   Preview,
   Section,
   Text,
@@ -17,7 +16,10 @@ interface VerificationEmailProps {
   url: string;
 }
 
-export function SignupEmailVerification({ name, url }: VerificationEmailProps) {
+export function SignupEmailVerification({
+  name,
+  url,
+}: VerificationEmailProps) {
   return (
     <Html>
       <Head />
@@ -26,21 +28,15 @@ export function SignupEmailVerification({ name, url }: VerificationEmailProps) {
         <Body className="bg-gray-50 font-sans">
           <Container className="bg-white border border-gray-200 rounded-xl shadow-sm p-10 mx-auto max-w-md mt-10">
             <Section className="text-center mb-8">
-              <Img
-                src={`${process.env.NEXT_PUBLIC_APP_URL}/logo.png`}
-                alt="AuthLift"
-                width="60"
-                height="60"
-                className="mx-auto mb-4"
-              />
+              Auth Lift
               <Heading className="text-2xl font-bold text-gray-900">
                 Welcome, {name}!
               </Heading>
             </Section>
 
             <Text className="text-gray-600 text-base leading-relaxed">
-              You&apos;re almost ready to start. Please verify your email
-              address by clicking the button below:
+              You&apos;re almost ready to start. Please verify your
+              email address by clicking the button below:
             </Text>
 
             <Section className="my-8 text-center">
@@ -61,8 +57,8 @@ export function SignupEmailVerification({ name, url }: VerificationEmailProps) {
             </Text>
 
             <Text className="text-gray-400 text-xs mt-8 text-center">
-              If you didn&apos;t create an account, you can safely ignore this
-              email.
+              If you didn&apos;t create an account, you can safely
+              ignore this email.
             </Text>
           </Container>
         </Body>

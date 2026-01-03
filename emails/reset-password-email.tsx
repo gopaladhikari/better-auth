@@ -17,7 +17,10 @@ interface ResetPasswordEmailProps {
   url: string;
 }
 
-export function ResetPasswordEmail({ name, url }: ResetPasswordEmailProps) {
+export function ResetPasswordEmail({
+  name,
+  url,
+}: ResetPasswordEmailProps) {
   return (
     <Html>
       <Head />
@@ -39,8 +42,8 @@ export function ResetPasswordEmail({ name, url }: ResetPasswordEmailProps) {
             </Section>
 
             <Text className="text-gray-600 text-base leading-relaxed">
-              Hi {name}, we received a request to reset your password. Click the
-              button below to set a new one:
+              Hi {name}, we received a request to reset your password.
+              Click the button below to set a new one:
             </Text>
 
             <Section className="my-8 text-center">
@@ -55,7 +58,8 @@ export function ResetPasswordEmail({ name, url }: ResetPasswordEmailProps) {
             <Text className="text-gray-500 text-sm">
               This link expires in 1 hour.
               <br />
-              If you didn&apos;t request this, you can safely ignore this email.
+              If you didn&apos;t request this, you can safely ignore
+              this email.
             </Text>
           </Container>
         </Body>

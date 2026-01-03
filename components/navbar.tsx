@@ -1,12 +1,26 @@
 "use client";
 
-import { Navbar, NavbarBrand, NavbarContent, NavbarItem } from "@heroui/navbar";
+import {
+  Navbar,
+  NavbarBrand,
+  NavbarContent,
+  NavbarItem,
+} from "@heroui/navbar";
 import { Link } from "@heroui/link";
 import { Button } from "@heroui/button";
 import { authClient } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
 
 export function Menu() {
   const { data, isPending } = authClient.useSession();
+
+  const router = useRouter();
+
+  const handleSignOut = async () => {
+    await authClient.signOut();
+
+    router.refresh();
+  };
 
   if (isPending) {
     return (
@@ -36,7 +50,7 @@ export function Menu() {
             <Button
               as={Link}
               color="danger"
-              onPress={async () => await authClient.signOut()}
+              onPress={handleSignOut}
               variant="flat"
             >
               Logout
@@ -61,7 +75,12 @@ export function Menu() {
           <Link href="/login">Login</Link>
         </NavbarItem>
         <NavbarItem>
-          <Button as={Link} color="primary" href="/signup" variant="flat">
+          <Button
+            as={Link}
+            color="primary"
+            href="/signup"
+            variant="flat"
+          >
             Sign Up
           </Button>
         </NavbarItem>
